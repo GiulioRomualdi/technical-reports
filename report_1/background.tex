@@ -185,7 +185,123 @@ The following principle holds:
   Where $\partial \Omega$ is the boundary of $\Omega$ (i.e. $\bar{\Omega} = \Omega \cup \partial \Omega$).
 \end{principle}
 Thus, in same case, the position of zero momentum point may not be enough to distinguish between a
-stable walk and an unstable one, to solve this problem a new conpcet mus be introduced, the
+stable walk and an unstable one, to solve this problem a new concept must be introduced, the
 Fictitious Zero momentum point, also know with the name of Foot Rotation Indicator (FRI)
 \cite{Goswami1999}.
+
+\subsection{Foot Rotation Indicator}
+In order to solve the problem of the ZMP another point is introduced. The FRI point is a point on
+the ground surface, within or outside the support polygon, where the ground reaction force $\vec{R}$
+\emph{would} have to act in order to keep the foot stable (i.e. the gait in dynamic equilibrium).
+In order to formally define the FRI point the dynamic of the entire robot must be taken into
+account.
+The following dynamic equation holds 
+\[
+\vec{M} + \vec{OP} \times \vec{R} + \sum_{i=0}^{N-1} {\vec{OG}_i \times m_i \vec{g}} = \sum_{i=0}^{N-1}
+\dot{\vec{H}}_{G_i} + \sum_{i=0}^{N-1} {\vec{OG}_i \times m_i \vec{a}_i}
+\]
+where $m_i$ is the mass, $G_i$ is the position of CoM, $\vec{H}_{G_i}$ is the angular momentum about the CoM and $\vec{a}_i$ is the CoM linear acceleration of the $i$-th link, while $\vec{M}$ and
+$\vec{R}$ are define in the below section.
+\par
+Following the same steps of the ZMP evaluation the dynamic of the entire robot, except from
+the reference foot, is completely represented by a force $\vec{F}_A$ and a torque $\vec{M}_A$.
+The dynamic equation of the foot is
+\begin{equation}
+  \label{eq:zmp_dyn_eq}
+  \vec{M} + \vec{OP} \times \vec{R} + \vec{OG}_0 \times m_0 \vec{g} + \vec{M}_A + \vec{OA} \times \vec{F}_A  = \dot{\vec{H}}_{G_0} + \vec{OG}_0 \times m_i \vec{a}_0
+\end{equation}
+It important to note that the equation (\ref{eq:zmp_2_cardinal}) can be easily obtained from
+\ref{eq:zmp_dyn_eq} by setting the dynamic term to $\vec{0}$.
+In the special case in which $O \equiv P$ where $P$ is the Center of pressure. the static
+equilibrium of the foot becomes
+\begin{equation}
+  \label{eq:foot_equilibrium}
+  \vec{M} + \vec{PG}_0 \times m_0 \vec{g} + \vec{M}_A + \vec{PA} \times \vec{F}_A = \vec{0}
+\end{equation}
+Projecting the equation (\ref{eq:foot_equilibrium}) only the $xy$-plane the equation
+(\ref{eq:zmp_eq}). In the presence of unbalanced torque on the foot the equation
+(\ref{eq:zmp_eq}) is not satisfied for any point inside the support polygon. However, the equation
+can be solved by a point $F$ outside the convex hull
+\begin{equation}
+  \label{eq:fri_eq}
+  \left [\vec{FG}_0 \times m_0 \vec{g} + \vec{M}_A + \vec{FA} \times \vec{F}_A \right]_{(x,y)} = \vec{0}
+\end{equation}
+In the following the point $F$ will be called Foot Rotation Indicator (FRI) point.
+An explicit solution of the equation (\ref{eq:fri_eq}) was find by Goswami \cite{Goswami1999},
+the idea is compute the ``dynamic of the robot without the foot''
+\[
+-\vec{M}_A - \vec{FA} \times \vec{F}_A + \sum_{i=1}^{N-1} {\vec{FG}_i \times m_i \vec{g}} = \sum_{i=1}^{N-1}
+\dot{\vec{H}}_{G_i} + \sum_{i=1}^{N-1} {\vec{FG}_i \times m_i \vec{a}_i}
+\]
+considering only the tangential plane and using the equation (\ref{eq:fri_eq})
+\[
+\left[\vec{FG}_0 \times m_0 \vec{g} + \sum_{i=1}^{N-1}\vec{FG}_i \times m_i (\vec{g}-\vec{a}_i)\right]_{(x.y)} = \left[ \sum_{i=1}^{N-1} \dot{\vec{H}}_{G_i} \right]_{(x,y)}
+\]
+Substituting the $\vec{FG}_i$ with $\vec{FO} + \vec{OG}_i$ and $\vec{OF} = -\vec{FO}$ the following
+equation holds
+\[
+\begin{split}
+  & \left[ \sum_{i=1}^{N-1} \vec{OF} \times m_i (\vec{a}_i - \vec{g}) -  \vec{OF} \times m_i \vec{g} \right]_{(x,y)} =\\
+ & \left[ -\vec{OG}_i \times m_i \vec{g} + \sum_{i=1}^{N-1} \dot{\vec{H}}_{G_i} + \sum_{i=1}^{N-1} \vec{OG}_i \times m_i (\vec{a}_i - \vec{g})  \right]_{(x,y)}
+\end{split}
+\]
+The cartesian position of the FRI point $\begin{bmatrix}OF_x & OF_y & 0 \end{bmatrix} \transpose$
+can be computed
+\[
+OF_x = \frac{m_1 OG_{1_y} g + \sum_{i=1}^{N-1} m_i OG_{i_y}(a_{i_z} + g) + \sum_{i=1}^{N-1} m_i OG_{i_z} a_{i_y} + \sum_{i=1}^{N-1} \dot{H}_{G_{i_x}}}{m_1 g + \sum_{i=1}^{N-1} m_i ( a_{i_z} + g)}
+\]
+\[
+OF_y = \frac{m_1 OG_{1_x} g + \sum_{i=1}^{N-1} m_i OG_{i_x}(a_{i_z} + g) + \sum_{i=1}^{N-1} m_i OG_{i_z} a_{i_x} + \sum_{i=1}^{N-1} \dot{H}_{G_{i_y}}}{m_1 g + \sum_{i=1}^{N-1} m_i ( a_{i_z} + g)}
+\]
+In the following some properties of the FRI point are summarized.
+The position of the FRI indicates the occurrence of foot rotation and it also indicate the magnitude
+and the direction of the unbalance moment.
+\[
+\vec{M}_{Q} = \vec{Q^*F} \times (m_1 \vec{g} + \vec{F}_A)
+\]
+where $Q^*$ (shown in figure \ref{fig:fri}) is the nearest point to $F$  belonging to the frontier of
+the convex hull of the foot support area.
+\par
+More formally
+\[
+Q^* = \arg \min_{Q \in \partial \Omega}\norm{\vec{QF}}_2
+\]
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.56]{fri}
+  \caption{Unstable unbalance. Image edit from \cite{Vukobratov2004}. \label{fig:fri}}
+\end{figure}
+However the more important result of the introduction of the FRI point can be summarized in the
+following principle \cite{Goswami1999}:
+\begin{principle}
+  The position of the FRI point $F$ is inside the convex hull of the foot support area ($\Omega$)
+  IFF the robot is in dynamic equilibrium.
+  \[
+  F \in \Omega \longleftrightarrow \text{dyanamic equilibrium}
+  \]
+  \par
+  It is also possible define the stability margin against the foot rotation.
+  It can be  quantified by the minimum distance bewteen the boundary of the support polygon
+  $\partial \Omega$ and the location of the FRI point within the sole.
+  \par
+  Instead, when the FRI point is outside the convex hull of the foot support area the
+  $\norm{\vec{QF}}_2$ is a measure of the robot instability.
+\end{principle}
+At this point it is interesting compare the concept of CoP, ZMP and FRI (FZMP)
+underling the difference between the CoP and the ZMP.
+\par
+In the figure (\ref{fig:fri_example}) different scenarios are presented. In the first one (a) a
+stable gait is illustrated, and the Zero Momentum Point coincides with the CoP. However if
+the FZMP (FRI point) is outside the support polygon the ZMP is not defined and the CoP belongs
+to the boundary of the support polygon ($\partial \Omega$).
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=1.2]{fri_examples}
+  \caption{Unstable unbalance. Image taken from \cite{Vukobratov2004}. \label{fig:fri_example}}
+\end{figure}
+The following conclusions can be done; in the case of the dynamically balanced gait the ZMP always
+coincides with the CoP and with the FRI point;
+however in the dynamically unbalanced gait scenario the ZMP is not defined, thus the CoP and
+ZMP cannot coincide, also, in this case, the CoP and the FRI point cannot coincide because the
+first one must be belong to the foot support area ($\Omega$).
 \newpage
