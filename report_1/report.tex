@@ -1,9 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \author{}
 
-%\usepackage[latin1]{inputenc}
 \usepackage[utf8]{inputenc}
-%\usepackage[italian]{babel}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -20,24 +18,27 @@
 
 \graphicspath{{figures/}}
 
-%% \renewcommand{\vec}[1]{\mathbf{#1}}
-
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
 \renewcommand{\vec}[1]{\boldsymbol{#1}}
-\newcommand{\vecg}[1]{\mathbold{#1}}
 \newcommand{\matr}[1]{\mathbf{#1}}
 \newcommand{\unitvec}[1]{\hat{\mathbold{#1}}}
 \newcommand{\unitvecg}[1]{\hat{\mathbold{#1}}}
 \newcommand{\diff}{\mathop{}\!\mathrm{d}}
-\newcommand{\cosine}{\mathop{}\!\mathrm{c}}
-\newcommand{\sine}{\mathop{}\!\mathrm{s}}
+\newcommand{\cosine}[1]{\mathop{}\!\mathrm{c}_{#1}}
+\newcommand{\sine}[1]{\mathop{}\!\mathrm{s}_{#1}}
 \newcommand{\transpose}{^{\mathrm{T}}}
-\newtheorem{theorem}{Theorem}
+\newtheorem{principle}{Principle}
 \newtheorem{prop}{Proposition}
 
 \begin{document}
+
 \tableofcontents
 \newpage
+\input{background.tex}
+\input{linear_inverted_pendulum.tex}
 
+\newpage
+\nocite{*}
+\bibliography{bibliography}
+\bibliographystyle{ieeetr}
 \end{document}
-
-
