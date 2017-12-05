@@ -1,15 +1,17 @@
 \section{Controller design}
-In this section the controller architecture is discussed, initially the entire architecture
+In this section the controller architecture is discussed, initially the entire framework
 is described then each controller is extensively analyzed.
+\par
 The main idea is develop a cascade control architecture (see Figure \ref{fig:control_architecuture}).
-The inner allows is used to tracking the
-Zero Momentum point trajectory while the outer loop is necessary to stabilize the
+The inner loop is used to tracking the
+Zero Momentum Point trajectory while the outer loop is necessary to stabilize the
 CP unstable dynamics (\ref{eq:cp_dynamics}).
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=1.0]{control_architecture}
   \caption{Controller architecture. \label{fig:control_architecuture}}
 \end{figure}
+\par
 It is important to underline that in the controller synthesis the following assumption holds:
 \begin{itemize}
 \item[-] the position, velocity and acceleration of the CoM of the entire robot can be measured or,
@@ -21,7 +23,7 @@ It is important to underline that in the controller synthesis the following assu
 Several version of capture point controller was proposed in these last years,
 for example Englsberger proposed a linear feedback controller \cite{Englsberger2011}
 while Krause a MPC approach \cite{Krause2012}.
-Both of these architecture use the ZMP as the controlled variable and in order to respect the
+Both of these architectures use the ZMP as the controlled variable and in order to respect the
 constraints on the ZMP (see the principle \ref{principle:zmp}) in the linear controller approach
 a projection inside the support polygon was proposed; while in the MPC approach the ZMP constraint
 was incorporated in the MPC framework.
@@ -33,10 +35,10 @@ The aim of this approach is stabilizing only the unstable part of the CP dynamic
   \label{eq:cp_dynamics_vettorial}
   \dot{\vec{\xi}} = \omega(\vec{\xi} - \vec{p})
 \end{equation}
-where $\vec{\xi}$ is the vector that contains the $x$ and $y$ coordinates of the capture point,
+where $\vec{\xi}$ is the vector that contains both $x$ and $y$ coordinates of the capture point,
 while $\vec{p}$, the control input, contains the  $x$ and $y$ coordinates of the ZMP.
-In the following a discrete time implementation with a piecewise constant control inputs.
-The equation (\ref{eq:cp_dynamics_vettorial}) can be discretized
+In the following a discrete time implementation with a piecewise constant control inputs is
+proposed. Thus the equation (\ref{eq:cp_dynamics_vettorial}) is discretized
 \[
 \vec{\xi}_{k+1} = A \vec{\xi}_{k} + B \vec{p}_{k} =
 \begin{bmatrix}
@@ -50,9 +52,12 @@ The equation (\ref{eq:cp_dynamics_vettorial}) can be discretized
 \end{bmatrix}
 \vec{p}_{k} 
 \]
-where $T$ is the sampling time. In order to reduce the number of variable in the MPC problem the
-``single shooting'' approach is used. The main idea is to keep only $\vec{\xi}_k$ and the vector
-input $\vec{P}$ as variables and the states $\vec{\xi}_{k + 1}, \dots, \vec{\xi}_{k + N}$ are eliminated recursively.
+where $T$ is the sampling time.
+\par
+In order to reduce the number of variable in the MPC problem the
+``single shooting'' approach is used. The main idea is to keep only the state at the actual time
+$\vec{\xi}_k$ and the vector input $\vec{P}$ as variables
+while the states $\vec{\xi}_{k + 1}, \dots, \vec{\xi}_{k + N}$ are eliminated recursively.
 Thus, the predicted capture point for the next $N$ states can be summarized as follows
 \[
 \vec{\Xi} = F_{\xi} \vec{\xi}_k + F_{p} \vec{P}
@@ -87,14 +92,13 @@ F_p =
   A^{N-1} B & \hdots & B
 \end{bmatrix}
 \]
-The control objective is the tracking the reference CP trajectory $\vec{\xi}_{ref}$ while the ZMP
-position satisfies the well known constraint.
+The control objective is the tracking the reference CP trajectory $\vec{\xi}_{ref}$ .
 Thus the following objective function can be defined
 \[
 J_k = \frac{1}{2} \left\{  (\vec{\Xi}_{ref} - \vec{\Xi})\transpose Q (\vec{\Xi}_{ref} - \vec{\Xi}) +
 (\Theta \vec{P} - \vec{e}_1 \vec{p}_{k-1}) \transpose R (\Theta \vec{P} - \vec{e}_1 \vec{p}_{k-1}) \right\}
 \]
-where $Q$ and $R$ are symmetric and positive definite matrices and $(\Theta \vec{P} - \vec{e}_1 \vec{p}_{k-1})$ is the rate of change of the controlled input. More specifically the matrix $\Theta$ is
+where $Q$ and $R$ are symmetric and positive definite matrices and $\Theta \vec{P} - \vec{e}_1 \vec{p}_{k-1}$ is the rate of change of the controlled input. More specifically the matrix $\Theta$ is
 defined as follow
 \[
 \Theta =
@@ -114,8 +118,7 @@ where ${}^f R_g(\alpha_k)$ is the rotation matrix between the reference frame at
 reference foot and the global inertial frame (see Figure \ref{fig:control_architecuture});
 $\vec{r}_k$ and $\alpha_k$ are respectively the footstep position and the orientation provided
 by the footstep planning algorithm. Finally $\vec{f}_{min}$ and $\vec{f}_{max}$ are the minimum and
-maximum values determined by rectangular envelope (draw in red in the figure
-\ref{fig:control_architecuture}).
+maximum values determined by rectangular envelope (red rectangle in the Figure \ref{fig:control_architecuture}).
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=.4]{foot_support_polygon}
@@ -131,9 +134,10 @@ In summary the following optimization problem has to be solved is
 \end{split}
 \]
 \subsection{Zero Momentum Point Controller}
-In this section the inner zero momentum point controller is analyzed. This approach is based on the
+In this section the inner Zero Momentum Point controller is analyzed. This approach is based on the
 Kajita work \cite{Kajita2003}.
-Using the well known ZMP equations and the the fact that the two equation are decoupled
+\par
+Using the well known ZMP equations
 \[
 \begin{split}
   p_y = y - \frac{z_c}{g} \ddot{y}\\
@@ -180,7 +184,7 @@ the following dynamic system can be defined
 \end{equation}
 the same system can be obtained for the $y$-coordinate.
 \par
-An MPC controller can be synthesize using the equations \ref{eq:zmp_mpc} and \ref{eq:zmp_mpc_y}.
+An MPC controller can be synthesize using the equations (\ref{eq:zmp_mpc}) and (\ref{eq:zmp_mpc_y}).
 First of all the ZMP dynamic equation must be discretized with a fixed sampling time $T$.
 \[
 \begin{split}
@@ -206,8 +210,7 @@ C =  \begin{bmatrix}
 \]
 The same approach shown in the previous section can be followed in order to formalize the optimal
 problem.
-Only $\vec{x}_k$ and the vector
-input $\vec{U}$ as variables and the states $\vec{x}_{k + 1}, \dots, \vec{x}_{k + N}$ are eliminated recursively.
+Only $\vec{x}_k$ and the vector input $\vec{U}$ are taken as variables while the states $\vec{x}_{k + 1}, \dots, \vec{x}_{k + N}$ are eliminated recursively.
 Thus, the predicted dynamic system for the next $N$ states can be summarized as follows
 \[
 \vec{X} = F_{x} \vec{x}_k + F_{u} \vec{U}
@@ -317,3 +320,4 @@ The MPC problem can be summarized as a Quadratic Programming Problem:
   & \quad \quad \quad  H_{x} \vec{x}_k + H_{u} \vec{U} - \vec{P} = \vec{0}
 \end{split}
 \]
+\newpage
