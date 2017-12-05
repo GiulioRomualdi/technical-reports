@@ -19,16 +19,17 @@
   \node[anchor=south west,inner sep=0] at (0,0) {
     \includegraphics[width=\textwidth]{fri_figure}};
 
+  \draw[black, fill=red] (A) circle (5pt);
+  \draw[black, fill=red] (F) circle (5pt);
+  \draw[black, fill=red] (Q) circle (5pt);
+
+  
   \node[left=5, below=1, font=\sffamily] at (A) {\Large A};
   \node[below=3, font=\sffamily] at (Q) {\Large Q$^*$};
   \node[right=8, above=1, font=\sffamily] at (F) {\Large F};
 
-  \draw[->=stealth, very thick,line width=1mm, red] (Q) -- (F);
-  
-  \draw[black, fill=red] (A) circle (5pt);
-  \draw[black, fill=red] (F) circle (5pt);
-  \draw[black, fill=red] (Q) circle (5pt);
-  
+  \draw[->=stealth, very thick,line width=1mm, blue] (Q) -- (F);
+    
 
   \draw[->=stealth, very thick, line width=1mm, black]  (A) -- (fa_final) node[font=\sffamily, left=7, above=2] {\Large $-\vec{F}_A$};
   \draw[->=stealth, very thick, line width=1mm, orange]  (A) -- (ma_final) node[font=\sffamily, right=7, below=20] {\Large $\vec{M}_A$};
