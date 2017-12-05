@@ -1,11 +1,11 @@
 \section{Derivation of the 3D-LIPM}
 The motion of CoM and the reference foot can be modelled using two different approach.
 In the first one the precise knowledge of robot dynamics
-(mass of each joint, location of center of mass of each joint, etc.) is required.
-The second approach, called \emph{inverted pendulum approach},
-uses only a limited knowledge of the robot dynamics (the position of whole body center of mass
-($CoM$), the entire mass of the robot ($m$), etc.). This last approach will be used in the following
-report.
+(mass of each joint, location of center of mass of each joint, etc.) is required, while in
+the second approach, called \emph{inverted pendulum approach}, only a limited knowledge of the
+robot dynamics (the position of whole body center of mass
+(CoM), the entire mass of the robot ($m$), etc.) is used.
+This last approach will be discussed in the following report.
 \par
 The section is organized in two subsection, in the first one the equations of general 3D inverted
 pendulum are shown. While in the other one the equations obtained are applied in the walking task.
@@ -15,7 +15,7 @@ The following dissertation will be mainly based on Kajita's work \cite{Kajita200
 When a biped robot is supporting its body on one leg (i.e. the robot is
 in the Swing phase), its dynamics can be approximated by the 3D Inverted Pendulum Model. This
 approximation allows to reduce the dynamics of the whole body to a simple inverted pendulum
-considering only the position of whole body center of mass ($CoM$) and
+considering only the position of whole body center of mass (CoM) and
 the entire mass of the robot ($m$).
 \par
 The model, shown in Figure \ref{fig:3d_lipm}, represents the entire robot as point mass in
@@ -27,7 +27,7 @@ top of a telescopic leg with no inertia while the other edge of this pendulum is
   \caption{3D Inverted pendulum model. \label{fig:3d_lipm}}
 \end{figure}
 \par
-The position of the mass point $\vec{p} = \begin{bmatrix} x & y & z \end{bmatrix} \transpose$
+The position of the mass point $\vec{x} = \begin{bmatrix} x & y & z \end{bmatrix} \transpose$
 is uniquely specified by a set of the Lagrangian coordinates $\vec{q}$
 \[
 \vec{q} =
@@ -47,7 +47,7 @@ the angles $\theta_r$ and $\theta_p$ are shown in the Figure \ref{fig:3d_lipm}.
 In order to develop a model of the pendulum the dynamic equation can be be easily derived
 \begin{equation}
   \label{eq:3d_ip_inverseJ}
-  m \ddot{\vec{p}} = (J\transpose)^{-1} \vec{\tau}  + m \vec{g}
+  m \ddot{\vec{x}} = (J\transpose)^{-1} \vec{\tau}  + m \vec{g}
 \end{equation}
 where $\vec{g} = \begin{bmatrix} 0 & 0 & -g \end{bmatrix} \transpose$ is the gravity vector,
 $\vec{\tau} = \begin{bmatrix} \tau_r & \tau_p & f \end{bmatrix} \transpose$ is the actuated
@@ -95,11 +95,12 @@ is multiplied by $J\transpose$
 where $D = \sqrt{1 - \sine{\theta_r} ^ 2 - \sine{\theta_d} ^ 2}$.
 \par
 Using the first row of the Equation (\ref{eq:3d_ip_expanse}) and multiplying by $D / \cosine{\theta_p}$ the following relation is obtained
-\[
-\frac{D}{\cosine{\theta_r}} m \left(-\ddot{y} r \cosine{\theta_r} - \ddot{z} r\frac{\cosine{\theta_r}\sine{\theta_r}}{D} \right ) =  \frac{D}{\cosine{\theta_r}} \tau_r + m g r \frac{D}{\cosine{\theta_r}}  \frac{\cosine{\theta_r} \sine{\theta_r}}{D} 
-\]
+\begin{equation}
+  \label{eq:3d_ip_partial}
+  \frac{D}{\cosine{\theta_r}} m \left(-\ddot{y} r \cosine{\theta_r} - \ddot{z} r\frac{\cosine{\theta_r}\sine{\theta_r}}{D} \right ) =  \frac{D}{\cosine{\theta_r}} \tau_r + m g r \frac{D}{\cosine{\theta_r}}  \frac{\cosine{\theta_r} \sine{\theta_r}}{D} 
+\end{equation}
 \par
-Substituting kinematic relationship in the equation above the equation of the the pendulum along
+Substituting kinematic relation in (\ref{eq:3d_ip_partial}) the equation of the the pendulum along
 the \emph{lateral} plane can be obtained
 \begin{equation}
   \label{eq:3d_ip_y}
@@ -112,16 +113,17 @@ With an analog procedure the equation of the pendulum along the \emph{sagittal} 
 \end{equation}
 
 \subsection{Derivation of the equations of a 3D Linear Inverted Pendulum}
-Although the moving pattern of the pendulum has vast possibilities, the class of motion that
-would be suitable for walking is selected. In this specific task the trajectory of the pendulum
+Although the moving pattern of the pendulum has many possibilities, the class of motion that
+would be suitable for walking is a small subset.
+In this specific task the trajectory of the pendulum
 must lie on a plane characterized by a normal vector
 $\begin{bmatrix} k_x & k_y & -1 \end{bmatrix}$
-and (passante per il punto) the point $(\begin{matrix} 0 & 0 & z_c \end{matrix})$.
+and passing through the point $(\begin{matrix} 0 & 0 & z_c \end{matrix})$.
 \[
 z = k_x x + k_y y + z_c
 \]
-Substituting the second derivative of the equation above in Equation (\ref{eq:3d_ip_y})
-and (\ref{eq:3d_ip_x}) the following system is obtained
+Substituting the second derivative of the plane equation in  (\ref{eq:3d_ip_y})
+and in (\ref{eq:3d_ip_x}) the following system is obtained
 \begin{equation}
   \label{eq:3d_lipm}
   \begin{cases}
@@ -167,7 +169,7 @@ The system dynamics of the $x$ coordinate is given by
 p_x
 \end{equation}
 where $\vec{\sigma} = \begin{bmatrix} x & \dot{x} \end{bmatrix} \transpose$.
-The explicit solution of the dynamics system is
+The explicit solution of the dynamic system is
 \begin{equation}
   \label{eq:lipm_solution}
   \vec{\sigma}(t) =
@@ -189,17 +191,18 @@ condition.
 
 \section{Capture point}
 In this section the concept of Capture point (CP) is introduced.
-It is the point on the floor where the robot (modeled as a LIPM) has to step to come
-to a complete rest, i.e. the center of mass is exactly located over the ankle and the horizontal
-velocity is null.
+The CP is the point on the floor where the robot (modeled as a 3D-LIPM) has to step to come
+to a complete rest (i.e. the center of mass is exactly located over the ankle and the horizontal
+velocity is null).
 \par
 The concept of Capture point was firstly introduced by Pratt et al. \cite{Pratt2006}
-the linear inverted pendulum orbital energy. However, in this report the equations of the CP are
-obtained using the explicit solution of the LIP dynamics. The following dissertation will be
-mainly based on the work of Englsberger et al. \cite{Englsberger2011}.
+using the linear inverted pendulum orbital energy.
+However, in this report the equations of the CP are obtained using the explicit solution of
+the LIP dynamics. The following dissertation will be mainly based on the work of
+Englsberger et al. \cite{Englsberger2011}.
 
 \subsection{Derivation of the Capture Point}
-The idea is using the Equation (\ref{eq:lipm_solution}) in order to find a point on the ground which, when ZMP is at this position, ensures that the pendulum comes to rest in a vertical position.
+The main idea is using the Equation (\ref{eq:lipm_solution}) in order to find a point on the ground which, when ZMP is at this position, ensures that the inverted pendulum comes to rest in a vertical position.
 \par
 More formally the capture point $\xi$ ensures that
 \begin{equation}
@@ -210,7 +213,9 @@ More formally the capture point $\xi$ ensures that
   \end{cases}
 \end{equation}
 \par
-The Equation (\ref{eq:lipm_solution}) can be written in a more suitable form
+In order to derive the equation of the CP the explicit solution
+of the CoM dynamic system (\ref{eq:lipm_solution})
+is written in a more suitable form
 \begin{equation}
   \label{eq:lipm_solution_extended}
   \begin{cases}
@@ -232,7 +237,7 @@ the capture point $\xi_x$ is defined as follow
   \label{eq:cp_def}
   \xi_x = x + \frac{\dot{x}}{\omega}
 \end{equation}
-
+where $\omega$ is the time constant of the 3D-LIPM.
 \subsection{Capture Point dynamics}
 In this subsection the dynamic system (\ref{eq:com_dynamic_equation}) is splitted in a stable and
 in an unstable parts. The stable one is based on the Capture Point $\xi_x$ and the CoM position $x$, while the unstable part is the dynamics of the Capture Point.
@@ -243,15 +248,25 @@ Solving the Equation
   \dot{x} = - \omega (x - \xi_x)
 \end{equation}
 The position of the CoM $x$ has a stable first order linear dynamics ($\omega > 0$).
-The dynamic system of the CP can be obtained by differentiation of (\ref{eq:cp_def}) combined with
-the equations (\ref{eq:com_dynamic_equation}) and (\ref{eq:com_vs_cp}).
+Thus the horizontal projection of the CoM follows the position
+of the CP with a time constant equal to $\omega$.
+\par
+This well known concept is illustrated in the Figure \ref{fig:cp_and_com}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.8]{cp_and_com}
+  \caption{Two-dimensional Capture Point and CoM. \label{fig:cp_and_com}}
+\end{figure}
+\par
+The dynamic system of the CP can be obtained by differentiation of (\ref{eq:cp_def}) and combining
+with the equations (\ref{eq:com_dynamic_equation}) and (\ref{eq:com_vs_cp}).
 \begin{equation}
   \label{eq:cp_dynamics}
   \dot{\xi}_x = \dot{x} + \frac{\ddot{x}}{\omega} = \omega (\xi_x - p_x) 
 \end{equation}
 The obtained dynamic equation has an unstable pole at $\omega$.
 \par
-By merging the two dynamics systems equations (\ref{eq:com_vs_cp}) and (\ref{eq:cp_dynamics}) a new
+By merging the two dynamic systems equations (\ref{eq:com_vs_cp}) and (\ref{eq:cp_dynamics}) a new
 formulation of the entire dynamic system can be obtained
 \[
 \dot{\vec{\theta}} =
@@ -267,4 +282,7 @@ formulation of the entire dynamic system can be obtained
 p_x
 \]
 where the state vector $\vec{\theta}$ is equal to $ \begin{bmatrix} x & \xi_x \end{bmatrix}\transpose$
+\par
+In the following section a controller architecture necessary to stabilize the Capture Point
+dynamics is presented.
 \newpage
