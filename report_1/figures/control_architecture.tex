@@ -32,13 +32,7 @@
       {font=\scriptsize},node distance=5mm]
 
     \node [input, name=input] {};
-    %% \node [sum, right=of input] (speed_sum) {};
-    %% \node [dot, right=8mm of speed_sum] (snodo1) {};
-    %% \node [gain, above right=7mm and 5mm of snodo1] (Kp) {$K_{p}$};
-    %% \node [gain, below right=7mm and 5mm of snodo1] (Ki) {$K_{i}$};
 
-    %% \node [block,right=of Ki] (integrator) {$\frac{1}{s}$};
-    %% \node [sum, xshift=7mm] at (snodo1-|integrator) (control_sum) {};
     \node [block, right=1.5cm of input] (traj_gen) {Trajectory \\ generation};
     \node [block, right=1.5cm of traj_gen] (CP) {CP \\ controller};
     \node [block, right=1.5cm of CP] (ZMP) {ZMP \\ controller};
@@ -57,19 +51,12 @@
       (output);
     \end{scope}
 
-    %DEFINIZIONE COLLEGAMENTI FEEDBACK
     \draw [->] (robot_state)  |- node [pos=0.99,right] {} (ZMP_eval);
     \draw [->] (ZMP_eval)  -| node [pos=0.7,right] {$\vec{p}$} (ZMP);
 
     \draw [->] (robot_state)  |- node [pos=0.99,right] {} (CP_eval);
     \draw [->] (CP_eval)  -| node [pos=0.7,right] {$\vec{\xi}$} (CP);
 
-    %\node [dot] at (motor_speed.south) {};
-
- %   \draw [->] (robot_state) -- ++(0,-2)  node[left,draw] (KiKd) {Ki.Kd};
-    %\draw [->] (KiKd) -- ++(0,1) -- node[above,pos=0.5] {$-$}(control_sum);
-
     \node [draw,dashed,fit=(ZMP)(system)(ZMP_eval)] (zmp_group) {};
-    %\node [above right] at (sc.south west) {Speed controller};
   \end{tikzpicture}
 \end{document}
